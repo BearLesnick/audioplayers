@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.PowerManager;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -200,6 +201,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     public void onPrepared(final MediaPlayer mediaPlayer) {
+        Log.d("debug", "OnPrepared");
         this.prepared = true;
         ref.handleDuration(this);
         if (this.playing) {
