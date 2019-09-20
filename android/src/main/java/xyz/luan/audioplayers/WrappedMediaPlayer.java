@@ -54,6 +54,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
             this.setSource(url);
             this.player.setVolume((float) volume, (float) volume);
             this.player.setLooping(this.releaseMode == ReleaseMode.LOOP);
+            Log.d("debug", "setURl");
             this.player.prepareAsync();
         }
     }

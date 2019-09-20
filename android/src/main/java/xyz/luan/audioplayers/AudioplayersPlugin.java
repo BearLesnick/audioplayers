@@ -59,7 +59,6 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 player.configAttributes(respectSilence, stayAwake, activity.getApplicationContext());
                 player.setVolume(volume);
                 player.setUrl(url, isLocal);
-                player.init();
             }
             case "play": {
                 final String url = call.argument("url");
