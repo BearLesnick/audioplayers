@@ -9,6 +9,8 @@ abstract class Player {
 
     abstract String getPlayerId();
 
+    abstract void init();
+
     abstract void play();
 
     abstract void stop();

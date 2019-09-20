@@ -1,7 +1,7 @@
 package xyz.luan.audioplayers;
 
-import android.os.Handler;
 import android.app.Activity;
+import android.os.Handler;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -50,6 +50,17 @@ public class AudioplayersPlugin implements MethodCallHandler {
         final String mode = call.argument("mode");
         final Player player = getPlayer(playerId, mode);
         switch (call.method) {
+            case "init": {
+                final String url = call.argument("url");
+                final double volume = call.argument("volume");
+                final boolean respectSilence = call.argument("respectSilence");
+                final boolean isLocal = call.argument("isLocal");
+                final boolean stayAwake = call.argument("stayAwake");
+                player.configAttributes(respectSilence, stayAwake, activity.getApplicationContext());
+                player.setVolume(volume);
+                player.setUrl(url, isLocal);
+                player.init();
+            }
             case "play": {
                 final String url = call.argument("url");
                 final double volume = call.argument("volume");
@@ -207,7 +218,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                     final int time = player.getCurrentPosition();
                     channel.invokeMethod("audio.onDuration", buildArguments(key, duration));
                     channel.invokeMethod("audio.onCurrentPosition", buildArguments(key, time));
-                } catch(UnsupportedOperationException e) {
+                } catch (UnsupportedOperationException e) {
 
                 }
             }

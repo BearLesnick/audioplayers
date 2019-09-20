@@ -1,11 +1,11 @@
 package xyz.luan.audioplayers;
 
+import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.PowerManager;
-import android.content.Context;
 
 import java.io.IOException;
 
@@ -109,6 +109,15 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     @Override
     String getPlayerId() {
         return this.playerId;
+    }
+
+    @Override
+    void init() {
+        try {
+            player.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
