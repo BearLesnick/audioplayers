@@ -246,6 +246,28 @@ class AudioPlayer {
     return result;
   }
 
+  Future<int> init(
+    String url, {
+    bool isLocal = false,
+    double volume = 1.0,
+    bool respectSilence = false,
+    bool stayAwake = false,
+  }) async {
+    isLocal ??= false;
+    volume ??= 1.0;
+    respectSilence ??= false;
+    stayAwake ??= false;
+
+    final int result = await _invokeMethod('init', {
+      'url': url,
+      'isLocal': isLocal,
+      'volume': volume,
+      'respectSilence': respectSilence,
+      'stayAwake': stayAwake,
+    });
+    return result;
+  }
+
   /// Pauses the audio that is currently playing.
   ///
   /// If you call [resume] later, the audio will resume from the point that it
