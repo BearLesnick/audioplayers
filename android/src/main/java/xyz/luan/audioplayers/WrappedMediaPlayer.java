@@ -9,6 +9,7 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
 
@@ -114,7 +115,13 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     void init() {
-        player.prepareAsync();
+        try {
+            player.prepare();
+        } catch (IOException e) {
+            Log.d("debug", Objects.requireNonNull(e.getLocalizedMessage()));
+            e.printStackTrace();
+        }
+
     }
 
     @Override
