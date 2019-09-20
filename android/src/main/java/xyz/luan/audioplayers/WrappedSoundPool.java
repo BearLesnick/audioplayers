@@ -52,6 +52,11 @@ public class WrappedSoundPool extends Player implements SoundPool.OnLoadComplete
     }
 
     @Override
+    void init() {
+        //ignore
+    }
+
+    @Override
     void play() {
         if (!this.loading) {
             start();
