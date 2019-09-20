@@ -49,6 +49,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
             } else if (this.prepared) {
                 this.player.reset();
                 this.prepared = false;
+                this.playing = false;
             }
 
             this.setSource(url);
