@@ -113,11 +113,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     void init() {
-        try {
-            player.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        player.prepareAsync();
     }
 
     @Override
