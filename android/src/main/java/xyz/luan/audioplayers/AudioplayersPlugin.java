@@ -143,7 +143,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                             new WrappedMediaPlayer(this, playerId, new MediaPlayer.OnErrorListener() {
                                 @Override
                                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                                    response.error("Unexpected error!", what);
+                                    response.error("Unexpected error!", "" + what + " " + extra, null);
                                     return false;
                                 }
                             }) :
