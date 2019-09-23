@@ -6,10 +6,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.PowerManager;
-import android.util.Log;
-
 import java.io.IOException;
-import java.util.Objects;
 
 public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
 
@@ -55,7 +52,6 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
             this.setSource(url);
             this.player.setVolume((float) volume, (float) volume);
             this.player.setLooping(this.releaseMode == ReleaseMode.LOOP);
-            Log.d("debug", "setURl");
             this.player.prepareAsync();
         }
     }
@@ -113,17 +109,6 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     @Override
     String getPlayerId() {
         return this.playerId;
-    }
-
-    @Override
-    void init() {
-        try {
-            player.prepare();
-        } catch (IOException e) {
-            Log.d("debug", Objects.requireNonNull(e.getLocalizedMessage()));
-            e.printStackTrace();
-        }
-
     }
 
     @Override
@@ -210,7 +195,6 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     public void onPrepared(final MediaPlayer mediaPlayer) {
-        Log.d("debug", "OnPrepared");
         this.prepared = true;
         ref.handleDuration(this);
         if (this.playing) {
