@@ -18,7 +18,7 @@ abstract class Player {
 
     abstract void pause();
 
-    abstract void setUrl(String url, boolean isLocal);
+    abstract void setUrl(String url, boolean isLocal, boolean isPrepareSync);
 
     abstract void setVolume(double volume);
 

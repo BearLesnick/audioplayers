@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.PowerManager;
+
 import java.io.IOException;
 
 public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
@@ -37,7 +38,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
      */
 
     @Override
-    void setUrl(String url, boolean isLocal) {
+    void setUrl(String url, boolean isLocal, boolean isPrepareSync) {
         if (!objectEquals(this.url, url)) {
             this.url = url;
             if (this.released) {
@@ -52,6 +53,13 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
             this.setSource(url);
             this.player.setVolume((float) volume, (float) volume);
             this.player.setLooping(this.releaseMode == ReleaseMode.LOOP);
+            if (isPrepareSync) {
+                try {
+                    this.player.prepare();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             this.player.prepareAsync();
         }
     }

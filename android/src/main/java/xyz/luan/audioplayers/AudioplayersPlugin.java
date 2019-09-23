@@ -58,11 +58,10 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 final boolean stayAwake = call.argument("stayAwake");
                 player.configAttributes(respectSilence, stayAwake, activity.getApplicationContext());
                 player.setVolume(volume);
-                player.setUrl(url, isLocal);
+                player.setUrl(url, isLocal, true);
                 break;
             }
             case "play": {
-
                 final String url = call.argument("url");
                 final double volume = call.argument("volume");
                 final Integer position = call.argument("position");
@@ -71,7 +70,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 final boolean stayAwake = call.argument("stayAwake");
                 player.configAttributes(respectSilence, stayAwake, activity.getApplicationContext());
                 player.setVolume(volume);
-                player.setUrl(url, isLocal);
+                player.setUrl(url, isLocal, false);
                 if (position != null && !mode.equals("PlayerMode.LOW_LATENCY")) {
                     player.seek(position);
                 }

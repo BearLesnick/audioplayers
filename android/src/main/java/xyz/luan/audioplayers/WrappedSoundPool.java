@@ -83,7 +83,7 @@ public class WrappedSoundPool extends Player implements SoundPool.OnLoadComplete
     }
 
     @Override
-    void setUrl(final String url, final boolean isLocal) {
+    void setUrl(final String url, final boolean isLocal, boolean isPrepareSync) {
         if (this.url != null && this.url.equals(url)) {
             return;
         }
