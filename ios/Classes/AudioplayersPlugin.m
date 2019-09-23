@@ -280,7 +280,6 @@ bool _isDealloc = false;
     NSLog(@"Error setting speaker: %@", error);
   }
   [[AVAudioSession sharedInstance] setActive:YES error:&error];
-[[AVAudioSession sharedInstance] init]
   [ self setUrl:url 
          isLocal:isLocal 
          playerId:playerId 
