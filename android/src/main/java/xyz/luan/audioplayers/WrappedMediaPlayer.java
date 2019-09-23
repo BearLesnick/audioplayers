@@ -126,9 +126,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
             this.playing = true;
             if (this.released) {
                 this.released = false;
-                if (player == null) {
-                    this.player = createPlayer();
-                }
+                this.player = createPlayer();
                 this.setSource(url);
                 this.player.prepareAsync();
             } else if (this.prepared) {
@@ -175,8 +173,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     void prepare(boolean isSync) {
-        if (!prepared) {
-            player = createPlayer();
+        if (!prepared && player!= null) {
             if (isSync) {
                 try {
                     player.prepare();
