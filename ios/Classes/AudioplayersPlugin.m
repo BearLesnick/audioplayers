@@ -77,7 +77,10 @@ bool _isDealloc = false;
                  int milliseconds = call.arguments[@"position"] == [NSNull null] ? 0.0 : [call.arguments[@"position"] intValue] ;
                  bool respectSilence = [call.arguments[@"respectSilence"]boolValue] ;
                  CMTime time = CMTimeMakeWithSeconds(milliseconds / 1000,NSEC_PER_SEC);
-                }
+                    [self setUrl: url isLocal:isLocal playerId:playerId onReady:^(NSString * playerId) {
+                      result(@(1));
+                    }];
+                },
                 @"play":
                   ^{
                     NSLog(@"play!");
@@ -277,7 +280,7 @@ bool _isDealloc = false;
     NSLog(@"Error setting speaker: %@", error);
   }
   [[AVAudioSession sharedInstance] setActive:YES error:&error];
-
+[[AVAudioSession sharedInstance] init]
   [ self setUrl:url 
          isLocal:isLocal 
          playerId:playerId 
