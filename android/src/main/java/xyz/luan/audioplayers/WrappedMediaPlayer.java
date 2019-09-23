@@ -173,7 +173,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     void prepare(boolean isSync) {
-        if (!prepared && player!= null) {
+        if (!prepared && player != null) {
             if (isSync) {
                 try {
                     player.prepare();
@@ -190,7 +190,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     void pause() {
-        if (this.playing) {
+        if (isActuallyPlaying()) {
             this.playing = false;
             this.player.pause();
         }
