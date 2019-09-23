@@ -58,7 +58,8 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 final boolean stayAwake = call.argument("stayAwake");
                 player.configAttributes(respectSilence, stayAwake, activity.getApplicationContext());
                 player.setVolume(volume);
-                player.setUrl(url, isLocal, true);
+                player.setUrl(url, isLocal);
+                player.prepare(true);
                 break;
             }
             case "play": {
@@ -70,7 +71,8 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 final boolean stayAwake = call.argument("stayAwake");
                 player.configAttributes(respectSilence, stayAwake, activity.getApplicationContext());
                 player.setVolume(volume);
-                player.setUrl(url, isLocal, false);
+                player.setUrl(url, isLocal);
+                player.prepare(false);
                 if (position != null && !mode.equals("PlayerMode.LOW_LATENCY")) {
                     player.seek(position);
                 }
@@ -106,7 +108,8 @@ public class AudioplayersPlugin implements MethodCallHandler {
             case "setUrl": {
                 final String url = call.argument("url");
                 final boolean isLocal = call.argument("isLocal");
-                player.setUrl(url, isLocal,false);
+                player.setUrl(url, isLocal);
+                player.prepare(false);
                 break;
             }
             case "getDuration": {

@@ -16,9 +16,11 @@ abstract class Player {
 
     abstract void release();
 
+    abstract void prepare(boolean isSync);
+
     abstract void pause();
 
-    abstract void setUrl(String url, boolean isLocal, boolean isPrepareSync);
+    abstract void setUrl(String url, boolean isLocal);
 
     abstract void setVolume(double volume);
 

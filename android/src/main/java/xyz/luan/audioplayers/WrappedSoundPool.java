@@ -1,10 +1,11 @@
 package xyz.luan.audioplayers;
 
+import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
-import android.content.Context;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -74,6 +75,11 @@ public class WrappedSoundPool extends Player implements SoundPool.OnLoadComplete
     }
 
     @Override
+    void prepare(boolean isSync) {
+        Log.d(WrappedSoundPool.class.getSimpleName(), "Prepare method is ignored cause not needed");
+    }
+
+    @Override
     void pause() {
         if (this.playing) {
             soundPool.pause(this.streamId);
@@ -83,7 +89,7 @@ public class WrappedSoundPool extends Player implements SoundPool.OnLoadComplete
     }
 
     @Override
-    void setUrl(final String url, final boolean isLocal, boolean isPrepareSync) {
+    void setUrl(final String url, final boolean isLocal) {
         if (this.url != null && this.url.equals(url)) {
             return;
         }
