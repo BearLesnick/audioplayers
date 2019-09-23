@@ -182,7 +182,12 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                     e.printStackTrace();
                 }
             } else {
-                player.prepareAsync();
+                try {
+                    player.prepareAsync();
+                } catch (IllegalStateException exc) {
+                    exc.printStackTrace();
+                }
+
             }
         }
 
