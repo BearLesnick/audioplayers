@@ -106,7 +106,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
             case "setUrl": {
                 final String url = call.argument("url");
                 final boolean isLocal = call.argument("isLocal");
-                player.setUrl(url, isLocal);
+                player.setUrl(url, isLocal,false);
                 break;
             }
             case "getDuration": {
