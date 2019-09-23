@@ -60,6 +60,24 @@ bool _isDealloc = false;
 
   // Squint and this looks like a proper switch!
   NSDictionary *methods = @{
+                @"init":^{
+                 NSString *url = call.arguments[@"url"];
+                 if (url == nil)
+                     result(0);
+                 if (call.arguments[@"isLocal"] == nil)
+                     result(0);
+                 if (call.arguments[@"volume"] == nil)
+                     result(0);
+                 if (call.arguments[@"position"] == nil)
+                     result(0);
+                 if (call.arguments[@"respectSilence"] == nil)
+                     result(0);
+                 int isLocal = [call.arguments[@"isLocal"]intValue] ;
+                 float volume = (float)[call.arguments[@"volume"] doubleValue] ;
+                 int milliseconds = call.arguments[@"position"] == [NSNull null] ? 0.0 : [call.arguments[@"position"] intValue] ;
+                 bool respectSilence = [call.arguments[@"respectSilence"]boolValue] ;
+                 CMTime time = CMTimeMakeWithSeconds(milliseconds / 1000,NSEC_PER_SEC);
+                }
                 @"play":
                   ^{
                     NSLog(@"play!");
