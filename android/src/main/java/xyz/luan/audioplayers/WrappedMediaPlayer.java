@@ -173,11 +173,12 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     void prepare(boolean isSync) {
-        if (!prepared && player != null) {
+        if (!prepared && player != null && released) {
             if (isSync) {
                 try {
                     player.prepare();
                     prepared = true;
+                    released = false;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
