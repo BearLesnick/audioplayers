@@ -9,7 +9,7 @@ import android.os.PowerManager;
 
 import java.io.IOException;
 
-public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
+public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
 
     private String playerId;
 
@@ -17,6 +17,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     private double volume = 1.0;
     private boolean respectSilence;
     private boolean stayAwake;
+    private MediaPlayer.OnErrorListener errorListener;
     private ReleaseMode releaseMode = ReleaseMode.RELEASE;
 
     private boolean released = true;
@@ -28,9 +29,10 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     private MediaPlayer player;
     private AudioplayersPlugin ref;
 
-    WrappedMediaPlayer(AudioplayersPlugin ref, String playerId) {
+    WrappedMediaPlayer(AudioplayersPlugin ref, String playerId, MediaPlayer.OnErrorListener errorListener) {
         this.ref = ref;
         this.playerId = playerId;
+        this.errorListener = errorListener;
     }
 
     /**
@@ -264,4 +266,8 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
         }
     }
 
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+       return errorListener.onError(mp, what, extra);
+    }
 }

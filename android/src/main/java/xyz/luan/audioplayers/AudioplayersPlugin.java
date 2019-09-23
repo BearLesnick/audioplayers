@@ -48,7 +48,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
     private void handleMethodCall(final MethodCall call, final MethodChannel.Result response) {
         final String playerId = call.argument("playerId");
         final String mode = call.argument("mode");
-        final Player player = getPlayer(playerId, mode);
+        final Player player = getPlayer(playerId, mode, response);
         switch (call.method) {
             case "init": {
                 final String url = call.argument("url");
@@ -135,26 +135,26 @@ public class AudioplayersPlugin implements MethodCallHandler {
         response.success(1);
     }
 
-    private Player getPlayer(String playerId, String mode) {
+    private Player getPlayer(String playerId, String mode, MethodChannel.Result response) {
         if (!mediaPlayers.containsKey(playerId)) {
             Player player =
                     mode.equalsIgnoreCase("PlayerMode.MEDIA_PLAYER") ?
-                            new WrappedMediaPlayer(this, playerId) :
+                            new WrappedMediaPlayer(this, playerId, (mp, what, extra) -> response.error("Unexpected error!", what)) :
                             new WrappedSoundPool(this, playerId);
             mediaPlayers.put(playerId, player);
         }
         return mediaPlayers.get(playerId);
     }
 
-    public void handleIsPlaying(Player player) {
+    void handleIsPlaying(Player player) {
         startPositionUpdates();
     }
 
-    public void handleDuration(Player player) {
+    void handleDuration(Player player) {
         channel.invokeMethod("audio.onDuration", buildArguments(player.getPlayerId(), player.getDuration()));
     }
 
-    public void handleCompletion(Player player) {
+    void handleCompletion(Player player) {
         channel.invokeMethod("audio.onComplete", buildArguments(player.getPlayerId(), true));
     }
 
