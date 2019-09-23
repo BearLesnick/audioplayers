@@ -59,7 +59,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 player.configAttributes(respectSilence, stayAwake, activity.getApplicationContext());
                 player.setVolume(volume);
                 player.setUrl(url, isLocal);
-                player.prepare(true);
+                player.prepare(false);
                 break;
             }
             case "play": {
