@@ -136,7 +136,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
         response.success(1);
     }
 
-    private Player getPlayer(String playerId, String mode, MethodChannel.Result response) {
+    private Player getPlayer(String playerId, String mode, final MethodChannel.Result response) {
         if (!mediaPlayers.containsKey(playerId)) {
             Player player =
                     mode.equalsIgnoreCase("PlayerMode.MEDIA_PLAYER") ?
