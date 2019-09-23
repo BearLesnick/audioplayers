@@ -1,6 +1,7 @@
 package xyz.luan.audioplayers;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
 import android.os.Handler;
 
 import java.lang.ref.WeakReference;
@@ -139,7 +140,13 @@ public class AudioplayersPlugin implements MethodCallHandler {
         if (!mediaPlayers.containsKey(playerId)) {
             Player player =
                     mode.equalsIgnoreCase("PlayerMode.MEDIA_PLAYER") ?
-                            new WrappedMediaPlayer(this, playerId, (mp, what, extra) -> response.error("Unexpected error!", what)) :
+                            new WrappedMediaPlayer(this, playerId, new MediaPlayer.OnErrorListener() {
+                                @Override
+                                public boolean onError(MediaPlayer mp, int what, int extra) {
+                                    response.error("Unexpected error!", what);
+                                    return false;
+                                }
+                            }) :
                             new WrappedSoundPool(this, playerId);
             mediaPlayers.put(playerId, player);
         }
