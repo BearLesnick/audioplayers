@@ -16,7 +16,7 @@ abstract class Player {
 
     abstract void release();
 
-    abstract void prepare(boolean isSync);
+    abstract void prepare();
 
     abstract void pause();
 

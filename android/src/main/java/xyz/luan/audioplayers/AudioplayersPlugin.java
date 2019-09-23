@@ -59,7 +59,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 player.configAttributes(respectSilence, stayAwake, activity.getApplicationContext());
                 player.setVolume(volume);
                 player.setUrl(url, isLocal);
-                player.prepare(false);
+                player.prepare();
                 break;
             }
             case "play": {
@@ -72,7 +72,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 player.configAttributes(respectSilence, stayAwake, activity.getApplicationContext());
                 player.setVolume(volume);
                 player.setUrl(url, isLocal);
-                player.prepare(false);
+                player.prepare();
                 if (position != null && !mode.equals("PlayerMode.LOW_LATENCY")) {
                     player.seek(position);
                 }
@@ -109,7 +109,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 final String url = call.argument("url");
                 final boolean isLocal = call.argument("isLocal");
                 player.setUrl(url, isLocal);
-                player.prepare(false);
+                player.prepare();
                 break;
             }
             case "getDuration": {

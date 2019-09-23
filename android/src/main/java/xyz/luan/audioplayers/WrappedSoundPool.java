@@ -75,7 +75,7 @@ public class WrappedSoundPool extends Player implements SoundPool.OnLoadComplete
     }
 
     @Override
-    void prepare(boolean isSync) {
+    void prepare() {
         Log.d(WrappedSoundPool.class.getSimpleName(), "Prepare method is ignored cause not needed");
     }
 
