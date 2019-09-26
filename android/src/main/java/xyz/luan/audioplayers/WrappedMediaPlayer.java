@@ -237,6 +237,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     private MediaPlayer createPlayer() {
         MediaPlayer player = new MediaPlayer();
+        player.setOnErrorListener(this);
         player.setOnPreparedListener(this);
         player.setOnCompletionListener(this);
         setAttributes(player);
