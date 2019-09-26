@@ -211,6 +211,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     public void onPrepared(final MediaPlayer mediaPlayer) {
+        Log.d("debug","onPrepared");
         this.prepared = true;
         ref.handleDuration(this);
         if (this.playing) {
@@ -270,7 +271,6 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        Log.d("debug", "error while player work");
         return errorListener.onError(mp, what, extra);
     }
 
