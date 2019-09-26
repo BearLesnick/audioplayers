@@ -136,14 +136,15 @@ public class AudioplayersPlugin implements MethodCallHandler {
         response.success(1);
     }
 
-    private Player getPlayer(String playerId, String mode, final MethodChannel.Result response) {
+    private Player getPlayer(String playerId, String mode) {
         if (!mediaPlayers.containsKey(playerId)) {
             Player player =
                     mode.equalsIgnoreCase("PlayerMode.MEDIA_PLAYER") ?
                             new WrappedMediaPlayer(this, playerId, new MediaPlayer.OnErrorListener() {
                                 @Override
                                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                                    response.error("Unexpected error!", "" + what + " " + extra, null);
+                                    final MethodChannel channel = this.channel.get();
+                                    channel.invokeMethod("audio.onError", buildArguments(playerId, "" + what + " " + extra));
                                     return true;
                                 }
                             }) :

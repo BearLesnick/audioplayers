@@ -10,7 +10,7 @@ import android.util.Log;
 
 import java.io.IOException;
 
-public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnInfoListener {
+public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
 
     private String playerId;
 
@@ -274,9 +274,4 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
         return errorListener.onError(mp, what, extra);
     }
 
-    @Override
-    public boolean onInfo(MediaPlayer mp, int what, int extra) {
-        Log.d("debug", "info listener");
-        return false;
-    }
 }
