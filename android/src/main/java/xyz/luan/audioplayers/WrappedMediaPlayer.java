@@ -189,9 +189,11 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     void pause() {
-        if (isActuallyPlaying()) {
+        if (this.playing) {
             this.playing = false;
-            this.player.pause();
+            if (this.prepared) {
+                this.player.pause();
+            }
         }
     }
 
@@ -211,7 +213,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     public void onPrepared(final MediaPlayer mediaPlayer) {
-        Log.d("debug","onPrepared");
+        Log.d("debug", "onPrepared");
         this.prepared = true;
         ref.handleDuration(this);
         if (this.playing) {
