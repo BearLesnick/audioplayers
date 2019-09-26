@@ -144,7 +144,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                                 @Override
                                 public boolean onError(MediaPlayer mp, int what, int extra) {
                                     response.error("Unexpected error!", "" + what + " " + extra, null);
-                                    return false;
+                                    return true;
                                 }
                             }) :
                             new WrappedSoundPool(this, playerId);
