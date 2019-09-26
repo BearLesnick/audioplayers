@@ -46,10 +46,10 @@ public class AudioplayersPlugin implements MethodCallHandler {
         }
     }
 
-    private void handleMethodCall(final MethodCall call, final MethodChannel.Result response) {
+    private void handleMethodCall(final MethodCall call) {
         final String playerId = call.argument("playerId");
         final String mode = call.argument("mode");
-        final Player player = getPlayer(playerId, mode, response);
+        final Player player = getPlayer(playerId, mode);
         switch (call.method) {
             case "init": {
                 final String url = call.argument("url");
