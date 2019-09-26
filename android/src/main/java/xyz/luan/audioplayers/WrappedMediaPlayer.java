@@ -191,6 +191,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     void pause() {
         if (this.playing) {
             this.playing = false;
+            //To avoid state exceptions if player is not prepared yet.
             if (this.prepared) {
                 this.player.pause();
             }
