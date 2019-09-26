@@ -143,9 +143,9 @@ public class AudioplayersPlugin implements MethodCallHandler {
                             new WrappedMediaPlayer(this, playerId, new MediaPlayer.OnErrorListener() {
                                 @Override
                                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                                    final MethodChannel channel = this.channel.get();
                                     channel.invokeMethod("audio.onError", buildArguments(playerId, "" + what + " " + extra));
                                     return true;
+
                                 }
                             }) :
                             new WrappedSoundPool(this, playerId);
