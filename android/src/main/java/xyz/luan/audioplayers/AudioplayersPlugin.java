@@ -60,7 +60,12 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 player.setVolume(volume);
                 player.setUrl(url, isLocal);
                 player.prepare();
-                channel.invokeMethod("audio.onDuration", buildArguments(playerId, player.getDuration()));
+                player.setOnPreparedCallback(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        channel.invokeMethod("audio.onDuration", buildArguments(playerId, mp.getDuration()));
+                    }
+                });
                 break;
             }
             case "play": {

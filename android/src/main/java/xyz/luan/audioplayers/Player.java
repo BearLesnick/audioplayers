@@ -1,6 +1,8 @@
 package xyz.luan.audioplayers;
 
 import android.content.Context;
+import android.media.MediaPlayer;
+
 abstract class Player {
 
     protected static boolean objectEquals(Object o1, Object o2) {
@@ -27,6 +29,8 @@ abstract class Player {
     abstract void configAttributes(boolean respectSilence, boolean stayAwake, Context context);
 
     abstract void setReleaseMode(ReleaseMode releaseMode);
+
+    abstract void setOnPreparedCallback (MediaPlayer.OnPreparedListener listener);
 
     abstract int getDuration();
 

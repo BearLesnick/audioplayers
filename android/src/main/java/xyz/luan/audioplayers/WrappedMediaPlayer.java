@@ -95,6 +95,11 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
         }
     }
 
+    @Override
+    void setOnPreparedCallback(MediaPlayer.OnPreparedListener listener) {
+        player.setOnPreparedListener(listener);
+    }
+
     /**
      * Getter methods
      */
@@ -184,7 +189,6 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     @Override
     void prepare() {
         if (!prepared && player != null) {
-
             try {
                 player.prepareAsync();
             } catch (IllegalStateException exc) {
