@@ -10,7 +10,7 @@ import android.util.Log;
 
 import java.io.IOException;
 
-public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
+public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
 
     private String playerId;
 
@@ -101,12 +101,20 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     int getDuration() {
-        return this.player.getDuration();
+        if (prepared) {
+            return this.player.getDuration();
+        } else {
+            return 0;
+        }
     }
 
     @Override
     int getCurrentPosition() {
-        return this.player.getCurrentPosition();
+        if (prepared) {
+            return this.player.getCurrentPosition();
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -141,7 +149,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     void stop() {
-        if (this.released||!this.prepared) {
+        if (this.released || !this.prepared) {
             return;
         }
 
