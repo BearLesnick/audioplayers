@@ -3,17 +3,16 @@ package xyz.luan.audioplayers;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
+import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 public class AudioplayersPlugin implements MethodCallHandler {
 
@@ -61,6 +60,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 player.setVolume(volume);
                 player.setUrl(url, isLocal);
                 player.prepare();
+                this.channel.get().invokeMethod("audio.onDuration", buildArguments(playerId, player.getDuration()));
                 break;
             }
             case "play": {
