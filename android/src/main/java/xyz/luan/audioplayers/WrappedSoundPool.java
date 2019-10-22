@@ -3,6 +3,7 @@ package xyz.luan.audioplayers;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 import android.util.Log;
@@ -129,6 +130,11 @@ public class WrappedSoundPool extends Player implements SoundPool.OnLoadComplete
         if (this.playing) {
             soundPool.setLoop(streamId, this.looping ? -1 : 0);
         }
+    }
+
+    @Override
+    void setOnPreparedCallback(MediaPlayer.OnPreparedListener listener) {
+//skipp
     }
 
     @Override
