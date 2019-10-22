@@ -133,6 +133,11 @@ public class WrappedSoundPool extends Player implements SoundPool.OnLoadComplete
     }
 
     @Override
+    void setOnPreparedListener(MediaPlayer.OnPreparedListener listener) {
+
+    }
+
+    @Override
     int getDuration() {
         throw unsupportedOperation("getDuration");
     }

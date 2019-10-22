@@ -95,6 +95,18 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
         }
     }
 
+    @Override
+    void setOnPreparedListener(MediaPlayer.OnPreparedListener listener) {
+        final MediaPlayer.OnPreparedListener outerListener = this;
+        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                outerListener.onPrepared(mp);
+                listener.onPrepared(mp);
+            }
+        });
+    }
+
     /**
      * Getter methods
      */
