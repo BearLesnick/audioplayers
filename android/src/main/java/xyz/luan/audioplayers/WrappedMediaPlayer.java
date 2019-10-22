@@ -152,7 +152,6 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
         if (this.released || !this.prepared) {
             return;
         }
-
         if (releaseMode != ReleaseMode.RELEASE) {
             if (this.playing) {
                 this.playing = false;
@@ -282,6 +281,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
+        mp.reset();
         return errorListener.onError(mp, what, extra);
     }
 
