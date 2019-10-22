@@ -30,8 +30,6 @@ abstract class Player {
 
     abstract void setReleaseMode(ReleaseMode releaseMode);
 
-    abstract void setOnPreparedCallback (MediaPlayer.OnPreparedListener listener);
-
     abstract int getDuration();
 
     abstract int getCurrentPosition();
