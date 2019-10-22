@@ -285,6 +285,8 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
+        release();
+        setUrl(url, false);
         return errorListener.onError(mp, what, extra);
     }
 
