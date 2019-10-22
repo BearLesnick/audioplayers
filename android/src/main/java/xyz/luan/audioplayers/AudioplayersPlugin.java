@@ -3,6 +3,7 @@ package xyz.luan.audioplayers;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.util.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -63,6 +64,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 player.setOnPreparedCallback(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
+                        Log.d("debug", "duration changed" + mp.getDuration());
                         channel.invokeMethod("audio.onDuration", buildArguments(playerId, mp.getDuration()));
                     }
                 });
