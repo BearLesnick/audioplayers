@@ -72,7 +72,12 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 player.configAttributes(respectSilence, stayAwake, activity.getApplicationContext());
                 player.setVolume(volume);
                 player.setUrl(url, isLocal);
-                player
+                player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        handleIsPlaying(player);
+                    }
+                });
                 player.prepare();
                 if (position != null && !mode.equals("PlayerMode.LOW_LATENCY")) {
                     player.seek(position);
