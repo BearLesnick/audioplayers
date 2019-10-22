@@ -60,7 +60,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 player.setVolume(volume);
                 player.setUrl(url, isLocal);
                 player.prepare();
-                this.channel.get().invokeMethod("audio.onDuration", buildArguments(playerId, player.getDuration()));
+                channel.invokeMethod("audio.onDuration", buildArguments(playerId, player.getDuration()));
                 break;
             }
             case "play": {
