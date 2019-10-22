@@ -114,7 +114,6 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 break;
             }
             case "getDuration": {
-
                 response.success(player.getDuration());
                 return;
             }

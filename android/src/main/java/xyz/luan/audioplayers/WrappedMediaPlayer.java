@@ -101,7 +101,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     int getDuration() {
-        if (prepared) {
+        if (prepared && !released) {
             return this.player.getDuration();
         } else {
             return 0;
@@ -110,7 +110,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     int getCurrentPosition() {
-        if (prepared) {
+        if (prepared && !released) {
             return this.player.getCurrentPosition();
         } else {
             return 0;
@@ -124,7 +124,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     boolean isActuallyPlaying() {
-        return this.playing && this.prepared;
+        return this.playing && this.prepared && !released;
     }
 
     /**
@@ -282,7 +282,6 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        setUrl(url, false);
         return errorListener.onError(mp, what, extra);
     }
 
