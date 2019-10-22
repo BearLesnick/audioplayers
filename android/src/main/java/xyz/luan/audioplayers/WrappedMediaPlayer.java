@@ -220,7 +220,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     public void onPrepared(final MediaPlayer mediaPlayer) {
-        Log.d("debug", "onPrepared");
+        Log.d("debug", "onPrepared " + mediaPlayer.getDuration());
         this.prepared = true;
         ref.handleDuration(this);
         if (this.playing) {
