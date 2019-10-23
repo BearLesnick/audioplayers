@@ -63,9 +63,11 @@ public class AudioplayersPlugin implements MethodCallHandler {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         handleIsPlaying(player);
+                        response.success(1);
                     }
                 });
                 player.prepare();
+                return;
                 break;
             }
             case "play": {
