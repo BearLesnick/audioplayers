@@ -47,8 +47,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
 
     private void handleMethodCall(final MethodCall call, final MethodChannel.Result response) {
         final String playerId = call.argument("playerId");
-        final String mode = call.argument("mode");
-        final Player player = getPlayer(playerId, mode);
+        final Player player = getPlayer(playerId);
         switch (call.method) {
             case "init": {
                 final String url = call.argument("url");
@@ -80,7 +79,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 player.setVolume(volume);
                 player.setUrl(url, isLocal);
                 player.prepare();
-                if (position != null && !mode.equals("PlayerMode.LOW_LATENCY")) {
+                if (position != null) {
                     player.seek(position);
                 }
                 player.play();
@@ -141,19 +140,15 @@ public class AudioplayersPlugin implements MethodCallHandler {
         response.success(1);
     }
 
-    private Player getPlayer(final String playerId, String mode) {
+    private Player getPlayer(final String playerId) {
         if (!mediaPlayers.containsKey(playerId)) {
-            Player player =
-                    mode.equalsIgnoreCase("PlayerMode.MEDIA_PLAYER") ?
-                            new WrappedMediaPlayer(this, playerId, new MediaPlayer.OnErrorListener() {
-                                @Override
-                                public boolean onError(MediaPlayer mp, int what, int extra) {
-                                    channel.invokeMethod("audio.onError", buildArguments(playerId, "" + what + " " + extra));
-                                    return true;
-
-                                }
-                            }) :
-                            new WrappedSoundPool(this, playerId);
+            Player player = new WrappedMediaPlayer(this, playerId, new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mp, int what, int extra) {
+                    channel.invokeMethod("audio.onError", buildArguments(playerId, "" + what + " " + extra));
+                    return true;
+                }
+            });
             mediaPlayers.put(playerId, player);
         }
         return mediaPlayers.get(playerId);
