@@ -68,7 +68,6 @@ public class AudioplayersPlugin implements MethodCallHandler {
                 });
                 player.prepare();
                 return;
-                break;
             }
             case "play": {
                 final String url = call.argument("url");
