@@ -64,21 +64,12 @@ bool _isDealloc = false;
                  NSString *url = call.arguments[@"url"];
                  if (url == nil)
                      result(0);
-                 if (call.arguments[@"isLocal"] == nil)
-                     result(0);
-                 if (call.arguments[@"volume"] == nil)
-                     result(0);
-                 if (call.arguments[@"position"] == nil)
-                     result(0);
-                 if (call.arguments[@"respectSilence"] == nil)
-                     result(0);
                  int isLocal = [call.arguments[@"isLocal"]intValue] ;
-                 float volume = (float)[call.arguments[@"volume"] doubleValue] ;
-                 int milliseconds = call.arguments[@"position"] == [NSNull null] ? 0.0 : [call.arguments[@"position"] intValue] ;
-                 bool respectSilence = [call.arguments[@"respectSilence"]boolValue] ;
-                 CMTime time = CMTimeMakeWithSeconds(milliseconds / 1000,NSEC_PER_SEC);
+
+                   AudioplayersPlugin* this = self;
                     [self setUrl: url isLocal:isLocal playerId:playerId onReady:^(NSString * playerId) {
-                      result(@(1));
+                         [_channel_audioplayer invokeMethod:@"audio.onDuration" arguments:@{@"playerId": playerId, @"value": @([this getDuration:playerId])}];
+                  result(@(1));
                     }];
                 },
                 @"play":
@@ -99,7 +90,7 @@ bool _isDealloc = false;
                     float volume = (float)[call.arguments[@"volume"] doubleValue] ;
                     int milliseconds = call.arguments[@"position"] == [NSNull null] ? 0.0 : [call.arguments[@"position"] intValue] ;
                     bool respectSilence = [call.arguments[@"respectSilence"]boolValue] ;
-                    CMTime time = CMTimeMakeWithSeconds(milliseconds / 1000,NSEC_PER_SEC);
+                    CMTime time = CMTimeMake(milliseconds, 1000);
                     NSLog(@"isLocal: %d %@", isLocal, call.arguments[@"isLocal"] );
                     NSLog(@"volume: %f %@", volume, call.arguments[@"volume"] );
                     NSLog(@"position: %d %@", milliseconds, call.arguments[@"positions"] );
@@ -133,7 +124,7 @@ bool _isDealloc = false;
                     } else {
                       int milliseconds = [call.arguments[@"position"] intValue];
                       NSLog(@"Seeking to: %d milliseconds", milliseconds);
-                      [self seek:playerId time:CMTimeMakeWithSeconds(milliseconds / 1000,NSEC_PER_SEC)];
+                      [self seek:playerId time:CMTimeMake(milliseconds, 1000)];
                     }
                   },
                 @"setUrl":
@@ -151,7 +142,7 @@ bool _isDealloc = false;
                   },
                 @"getDuration":
                     ^{
-                        
+
                         int duration = [self getDuration:playerId];
                         NSLog(@"getDuration: %i ", duration);
                         result(@(duration));
@@ -177,7 +168,7 @@ bool _isDealloc = false;
     NSLog(@"not implemented");
     result(FlutterMethodNotImplemented);
   }
-  if(![call.method isEqualToString:@"setUrl"]) {
+  if(![call.method isEqualToString:@"setUrl"]&&![call.method isEqualToString:@"init"]) {
     result(@(1));
   }
 }
