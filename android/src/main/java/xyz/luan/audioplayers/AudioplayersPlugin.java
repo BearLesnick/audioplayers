@@ -3,16 +3,20 @@ package xyz.luan.audioplayers;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
+import android.util.Log;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
+import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 public class AudioplayersPlugin implements MethodCallHandler {
 
@@ -24,6 +28,9 @@ public class AudioplayersPlugin implements MethodCallHandler {
     private Runnable positionUpdates;
     private final Activity activity;
 
+    /**
+     * @param registrar used to register this class as a method call handler
+     */
     public static void registerWith(final Registrar registrar) {
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "xyz.luan/audioplayers");
         channel.setMethodCallHandler(new AudioplayersPlugin(channel, registrar.activity()));
@@ -36,7 +43,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
     }
 
     @Override
-    public void onMethodCall(final MethodCall call, final MethodChannel.Result response) {
+    public void onMethodCall(@NotNull final MethodCall call, @NotNull final MethodChannel.Result response) {
         try {
             handleMethodCall(call, response);
         } catch (Exception e) {
@@ -104,7 +111,6 @@ public class AudioplayersPlugin implements MethodCallHandler {
             case "seek": {
                 final Integer position = call.argument("position");
                 player.seek(position);
-                break;
             }
             case "setVolume": {
                 final double volume = call.argument("volume");
@@ -145,6 +151,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
             Player player = new WrappedMediaPlayer(this, playerId, new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
+                    Log.d("debug log", "" + what + " " + extra);
                     channel.invokeMethod("audio.onError", buildArguments(playerId, "" + what + " " + extra));
                     return true;
                 }
@@ -230,7 +237,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                     channel.invokeMethod("audio.onDuration", buildArguments(key, duration));
                     channel.invokeMethod("audio.onCurrentPosition", buildArguments(key, time));
                 } catch (UnsupportedOperationException e) {
-
+                    Log.e("UnsupportedOperation", e.getLocalizedMessage());
                 }
             }
 
