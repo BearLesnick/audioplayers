@@ -5,7 +5,6 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -43,7 +42,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
     }
 
     @Override
-    public void onMethodCall(@NotNull final MethodCall call, @NotNull final MethodChannel.Result response) {
+    public void onMethodCall(final MethodCall call, final MethodChannel.Result response) {
         try {
             handleMethodCall(call, response);
         } catch (Exception e) {
