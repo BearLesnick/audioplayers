@@ -57,8 +57,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
         } else {
             manager.requestAudioFocus(this, AudioManager.AUDIOFOCUS_GAIN, AudioAttributes.CONTENT_TYPE_MUSIC);
         }
-
-
+        isInterrupted = false;
         Log.d("AudioManager", "Focus request made");
     }
 
