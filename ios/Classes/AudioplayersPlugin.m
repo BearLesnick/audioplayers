@@ -37,16 +37,29 @@ bool _isDealloc = false;
   _channel_audioplayer = channel;
 }
 
+- (void)interruptionHandler:(NSNotification *)notification {
+      if ([notification.name isEqualToString:AVAudioSessionInterruptionNotification]) {
+       NSLog(@"Interruption notification");
+
+       if ([[notification.userInfo valueForKey:AVAudioSessionInterruptionTypeKey] isEqualToNumber:[NSNumber numberWithInt:AVAudioSessionInterruptionTypeBegan]]) {
+           NSLog(@"InterruptionTypeBegan");
+            [_channel_audioplayer invokeMethod:@"audio.onCurrentPosition" arguments:@{@"players": players}];
+       } else {
+           NSLog(@"InterruptionTypeEnded");
+       }
+      }}
+
 - (id)init {
   self = [super init];
   if (self) {
       _isDealloc = false;
       players = [[NSMutableDictionary alloc] init];
+      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(interruptionHandler:) name:AVAudioSessionInterruptionNotification object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(needStop) name:AudioplayersPluginStop object:nil];
   }
   return self;
 }
-    
+
 - (void)needStop {
     _isDealloc = true;
     [self destory];
@@ -189,7 +202,7 @@ bool _isDealloc = false;
   AVPlayer *player = playerInfo[@"player"];
   NSMutableSet *observers = playerInfo[@"observers"];
   AVPlayerItem *playerItem;
-    
+
   NSLog(@"setUrl %@", url);
 
   if (!playerInfo || ![url isEqualToString:playerInfo[@"url"]]) {
@@ -198,7 +211,7 @@ bool _isDealloc = false;
     } else {
       playerItem = [ [ AVPlayerItem alloc ] initWithURL:[ NSURL URLWithString:url ]];
     }
-      
+
     if (playerInfo[@"url"]) {
       [[player currentItem] removeObserver:self forKeyPath:@"player.currentItem.status" ];
 
@@ -227,7 +240,7 @@ bool _isDealloc = false;
       }];
         [timeobservers addObject:@{@"player":player, @"observer":timeObserver}];
     }
-      
+
     id anobserver = [[ NSNotificationCenter defaultCenter ] addObserverForName: AVPlayerItemDidPlayToEndTimeNotification
                                                                         object: playerItem
                                                                          queue: nil
@@ -235,14 +248,14 @@ bool _isDealloc = false;
                                                                         [self onSoundComplete:playerId];
                                                                     }];
     [observers addObject:anobserver];
-      
+
     // is sound ready
     [playerInfo setObject:onReady forKey:@"onReady"];
     [playerItem addObserver:self
                           forKeyPath:@"player.currentItem.status"
                           options:0
                           context:(void*)playerId];
-      
+
   } else {
     if ([[player currentItem] status ] == AVPlayerItemStatusReadyToPlay) {
       onReady(playerId);
@@ -267,6 +280,7 @@ bool _isDealloc = false;
     BOOL success = [[AVAudioSession sharedInstance]
                     setCategory: category
                     error:&error];
+   success =  [[AVAudioSession sharedInstance] setMode:AVAudioSessionModeMeasurement error:&error ];
   if (!success) {
     NSLog(@"Error setting speaker: %@", error);
   }

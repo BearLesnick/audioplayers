@@ -411,6 +411,10 @@ class AudioPlayer {
         // ignore: deprecated_member_use_from_same_package
         player.errorHandler?.call(value);
         break;
+      case 'audio.onInterupted':
+        players.forEach(
+            (_, AudioPlayer player) => player.state = AudioPlayerState.STOPPED);
+        break;
       default:
         _log('Unknown method ${call.method} ');
     }
