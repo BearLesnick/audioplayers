@@ -153,7 +153,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
             }, new OnAudioInterruptedListener() {
                 @Override
                 public void onInterrupted() {
-                    channel.invokeMethod("audio.onInterrupted", null);
+                    channel.invokeMethod("audio.onInterrupted", buildArguments(playerId, "Interrupted"));
                 }
             }, (AudioManager) context.getSystemService(Context.AUDIO_SERVICE));
             mediaPlayers.put(playerId, player);
