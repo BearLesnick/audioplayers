@@ -340,9 +340,6 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                 break;
             case AudioManager.AUDIOFOCUS_GAIN:
                 event = "AUDIOFOCUS_GAIN";
-                if (!playing) {
-                    play();
-                }
                 player.setVolume(1f, 1f);
                 break;
         }
