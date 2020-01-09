@@ -1,6 +1,5 @@
 package xyz.luan.audioplayers;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
@@ -42,18 +41,25 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
     void requestAudioFocus(AudioManager manager) {
-        AudioAttributes playbackAttributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_GAME)
-                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                .build();
-        AudioFocusRequest focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                .setAudioAttributes(playbackAttributes)
-                .setAcceptsDelayedFocusGain(true)
-                .setOnAudioFocusChangeListener(this, new Handler())
-                .build();
-        manager.requestAudioFocus(focusRequest);
+        AudioAttributes playbackAttributes = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            playbackAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build();
+            AudioFocusRequest focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(playbackAttributes)
+                    .setAcceptsDelayedFocusGain(true)
+                    .setOnAudioFocusChangeListener(this, new Handler())
+                    .build();
+            manager.requestAudioFocus(focusRequest);
+        }
+        else{
+            manager.requestAudioFocus(this,0,0);
+        }
+
+
         Log.d("AudioManager", "Focus request made");
     }
 
