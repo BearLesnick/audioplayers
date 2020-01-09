@@ -54,7 +54,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                     .build();
             manager.requestAudioFocus(focusRequest);
         } else {
-            manager.requestAudioFocus(this, AudioManager.AUDIOFOCUS_GAIN, AudioManager.STREAM_MUSIC);
+            manager.requestAudioFocus(this, AudioManager.AUDIOFOCUS_GAIN, AudioAttributes.CONTENT_TYPE_MUSIC);
         }
 
 
@@ -340,6 +340,9 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                 break;
             case AudioManager.AUDIOFOCUS_GAIN:
                 event = "AUDIOFOCUS_GAIN";
+                if (!playing) {
+                    play();
+                }
                 player.setVolume(1f, 1f);
                 break;
         }
