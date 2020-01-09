@@ -43,7 +43,7 @@ bool _isDealloc = false;
 
        if ([[notification.userInfo valueForKey:AVAudioSessionInterruptionTypeKey] isEqualToNumber:[NSNumber numberWithInt:AVAudioSessionInterruptionTypeBegan]]) {
            NSLog(@"InterruptionTypeBegan");
-            [_channel_audioplayer invokeMethod:@"audio.onInterrupted"];
+            [_channel_audioplayer invokeMethod:@"audio.onInterrupted" arguments:@{}];
        } else {
            NSLog(@"InterruptionTypeEnded");
        }
