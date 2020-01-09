@@ -1,9 +1,13 @@
 package xyz.luan.audioplayers;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 
-abstract class Player {
+@TargetApi(Build.VERSION_CODES.FROYO)
+abstract public class Player implements AudioManager.OnAudioFocusChangeListener, OnAudioInterruptedListener {
 
     protected static boolean objectEquals(Object o1, Object o2) {
         return o1 == null && o2 == null || o1 != null && o1.equals(o2);
@@ -30,7 +34,7 @@ abstract class Player {
 
     abstract void setReleaseMode(ReleaseMode releaseMode);
 
-    abstract void setOnPreparedListener( MediaPlayer.OnPreparedListener listener);
+    abstract void setOnPreparedListener(MediaPlayer.OnPreparedListener listener);
 
     abstract int getDuration();
 
@@ -43,3 +47,4 @@ abstract class Player {
      */
     abstract void seek(int position);
 }
+

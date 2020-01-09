@@ -150,21 +150,26 @@ public class AudioplayersPlugin implements MethodCallHandler {
                     channel.invokeMethod("audio.onError", buildArguments(playerId, "" + what + " " + extra));
                     return true;
                 }
+            }, new OnAudioInterruptedListener() {
+                @Override
+                public void onInterrupted() {
+                    channel.invokeMethod("audio.onInterrupted", null);
+                }
             }, (AudioManager) context.getSystemService(Context.AUDIO_SERVICE));
             mediaPlayers.put(playerId, player);
         }
         return mediaPlayers.get(playerId);
     }
 
-    void handleIsPlaying(Player player) {
+    public void handleIsPlaying(Player player) {
         startPositionUpdates();
     }
 
-    void handleDuration(Player player) {
+    public void handleDuration(Player player) {
         channel.invokeMethod("audio.onDuration", buildArguments(player.getPlayerId(), player.getDuration()));
     }
 
-    void handleCompletion(Player player) {
+    public void handleCompletion(Player player) {
         channel.invokeMethod("audio.onComplete", buildArguments(player.getPlayerId(), true));
     }
 

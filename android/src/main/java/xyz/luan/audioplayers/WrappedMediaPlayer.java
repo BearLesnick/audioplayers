@@ -12,10 +12,11 @@ import android.util.Log;
 
 import java.io.IOException;
 
-public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, AudioManager.OnAudioFocusChangeListener {
+public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
 
     private String playerId;
-
+    private final OnAudioInterruptedListener onAudioInterruptedListener;
     private String url;
     private double volume = 1.0;
     private boolean respectSilence;
@@ -34,12 +35,16 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     private MediaPlayer player;
     private AudioplayersPlugin ref;
 
-    WrappedMediaPlayer(AudioplayersPlugin ref, String playerId, MediaPlayer.OnErrorListener errorListener, AudioManager manager) {
+    public WrappedMediaPlayer(AudioplayersPlugin ref,
+                              String playerId,
+                              MediaPlayer.OnErrorListener errorListener,
+                              OnAudioInterruptedListener onAudioInterruptedListener,
+                              AudioManager manager) {
         this.ref = ref;
         this.playerId = playerId;
         this.errorListener = errorListener;
         this.audioManager = manager;
-
+        this.onAudioInterruptedListener = onAudioInterruptedListener;
     }
 
     @SuppressWarnings("deprecation")
@@ -317,6 +322,10 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
         }
     }
 
+    /**
+     * Playback callbacks
+     **/
+
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         release();
@@ -351,5 +360,10 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                 break;
         }
         Log.d("AudioFocus", "onAudioFocusChange: " + event);
+    }
+
+    @Override
+    public void onInterrupted() {
+        onAudioInterruptedListener.onInterrupted();
     }
 }
