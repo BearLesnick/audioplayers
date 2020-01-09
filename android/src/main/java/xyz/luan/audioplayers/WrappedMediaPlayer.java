@@ -42,9 +42,9 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     }
 
     void requestAudioFocus(AudioManager manager) {
-        AudioAttributes playbackAttributes = null;
+
         if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP) {
-            playbackAttributes = new AudioAttributes.Builder()
+            AudioAttributes playbackAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_MEDIA)
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build();
@@ -55,7 +55,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                     .build();
             manager.requestAudioFocus(focusRequest);
         } else {
-            manager.requestAudioFocus(this, 0, 0);
+
         }
 
 
