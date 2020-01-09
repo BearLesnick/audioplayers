@@ -42,6 +42,8 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     }
 
+    @SuppressWarnings("deprecation")
+        //Required to be compatible with android Jelly Bean
     void requestAudioFocus(AudioManager manager) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             AudioAttributes playbackAttributes = new AudioAttributes.Builder()
