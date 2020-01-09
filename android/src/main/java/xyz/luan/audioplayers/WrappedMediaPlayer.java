@@ -340,12 +340,12 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
             case AudioManager.AUDIOFOCUS_LOSS:
                 event = "AUDIOFOCUS_LOSS";
                 pause();
-                isInterrupted = true;
+                onInterrupted();
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                 event = "AUDIOFOCUS_LOSS_TRANSIENT";
                 pause();
-                isInterrupted = true;
+                onInterrupted();
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 event = "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK";
@@ -364,6 +364,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     public void onInterrupted() {
+        isInterrupted = true;
         onAudioInterruptedListener.onInterrupted();
     }
 }
