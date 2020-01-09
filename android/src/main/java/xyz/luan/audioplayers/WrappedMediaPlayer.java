@@ -54,6 +54,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                 .setOnAudioFocusChangeListener(this, new Handler())
                 .build();
         manager.requestAudioFocus(focusRequest);
+        Log.d("AudioManager", "Focus request made");
     }
 
     /**
