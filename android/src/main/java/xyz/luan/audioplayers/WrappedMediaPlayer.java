@@ -20,6 +20,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     private double volume = 1.0;
     private boolean respectSilence;
     private boolean stayAwake;
+    private boolean isInterrupted = false;
     private MediaPlayer.OnErrorListener errorListener;
     private ReleaseMode releaseMode = ReleaseMode.RELEASE;
     private final AudioManager audioManager;
@@ -329,10 +330,12 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
             case AudioManager.AUDIOFOCUS_LOSS:
                 event = "AUDIOFOCUS_LOSS";
                 pause();
+                isInterrupted = true;
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                 event = "AUDIOFOCUS_LOSS_TRANSIENT";
                 pause();
+                isInterrupted = true;
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 event = "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK";
@@ -340,7 +343,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                 break;
             case AudioManager.AUDIOFOCUS_GAIN:
                 event = "AUDIOFOCUS_GAIN";
-                if (!playing) {
+                if (isInterrupted) {
                     play();
                 }
                 player.setVolume(1f, 1f);
