@@ -412,8 +412,11 @@ class AudioPlayer {
         player.errorHandler?.call(value);
         break;
       case 'audio.onInterrupted':
-        players.forEach(
-            (_, AudioPlayer player) => player.state = AudioPlayerState.STOPPED);
+        players.forEach((_, AudioPlayer player) {
+          if (player.state == AudioPlayerState.PLAYING) {
+            player.pause();
+          }
+        });
         break;
       default:
         _log('Unknown method ${call.method} ');

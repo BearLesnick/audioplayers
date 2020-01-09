@@ -1,16 +1,19 @@
 package xyz.luan.audioplayers;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.util.Log;
 
 import java.io.IOException;
 
-public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
+public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, AudioManager.OnAudioFocusChangeListener {
 
     private String playerId;
 
@@ -20,6 +23,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     private boolean stayAwake;
     private MediaPlayer.OnErrorListener errorListener;
     private ReleaseMode releaseMode = ReleaseMode.RELEASE;
+    private final AudioManager audioManager;
 
     private boolean released = true;
     private boolean prepared = false;
@@ -30,10 +34,26 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     private MediaPlayer player;
     private AudioplayersPlugin ref;
 
-    WrappedMediaPlayer(AudioplayersPlugin ref, String playerId, MediaPlayer.OnErrorListener errorListener) {
+    WrappedMediaPlayer(AudioplayersPlugin ref, String playerId, MediaPlayer.OnErrorListener errorListener, AudioManager manager) {
         this.ref = ref;
         this.playerId = playerId;
         this.errorListener = errorListener;
+        this.audioManager = manager;
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    void requestAudioFocus(AudioManager manager) {
+        AudioAttributes playbackAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build();
+        AudioFocusRequest focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                .setAudioAttributes(playbackAttributes)
+                .setAcceptsDelayedFocusGain(true)
+                .setOnAudioFocusChangeListener(this, new Handler())
+                .build();
+        manager.requestAudioFocus(focusRequest);
     }
 
     /**
@@ -52,7 +72,6 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                 this.prepared = false;
                 this.playing = false;
             }
-
             this.setSource(url);
             this.player.setVolume((float) volume, (float) volume);
             this.player.setLooping(this.releaseMode == ReleaseMode.LOOP);
@@ -154,6 +173,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                 prepare();
             } else if (this.prepared) {
                 this.player.start();
+                requestAudioFocus(audioManager);
                 this.ref.handleIsPlaying(this);
             }
         }
@@ -297,4 +317,23 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
         return errorListener.onError(mp, what, extra);
     }
 
+    @Override
+    public void onAudioFocusChange(int focusEvent) {
+        String event = "";
+        switch (focusEvent) {
+            case AudioManager.AUDIOFOCUS_LOSS:
+                event = "AUDIOFOCUS_LOSS";
+                break;
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                event = "AUDIOFOCUS_LOSS_TRANSIENT";
+                break;
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                event = "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK";
+                break;
+            case AudioManager.AUDIOFOCUS_GAIN:
+                event = "AUDIOFOCUS_GAIN";
+                break;
+        }
+        Log.d("AudioFocus", "onAudioFocusChange: " + event);
+    }
 }

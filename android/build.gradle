@@ -40,3 +40,6 @@ allprojects {
         }
     }
 }
+dependencies {
+    compileOnly files("/Users/andriimazepa/Documents/flutter/bin/cache/artifacts/engine/android-arm/flutter.jar")
+}

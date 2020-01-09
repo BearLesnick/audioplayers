@@ -1,6 +1,8 @@
 package xyz.luan.audioplayers;
 
 import android.app.Activity;
+import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import io.flutter.plugin.common.MethodCall;
@@ -47,7 +49,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
 
     private void handleMethodCall(final MethodCall call, final MethodChannel.Result response) {
         final String playerId = call.argument("playerId");
-        final Player player = getPlayer(playerId);
+        final Player player = getPlayer(playerId, activity);
         switch (call.method) {
             case "init": {
                 final String url = call.argument("url");
@@ -140,7 +142,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
         response.success(1);
     }
 
-    private Player getPlayer(final String playerId) {
+    private Player getPlayer(final String playerId, Context context) {
         if (!mediaPlayers.containsKey(playerId)) {
             Player player = new WrappedMediaPlayer(this, playerId, new MediaPlayer.OnErrorListener() {
                 @Override
@@ -148,7 +150,7 @@ public class AudioplayersPlugin implements MethodCallHandler {
                     channel.invokeMethod("audio.onError", buildArguments(playerId, "" + what + " " + extra));
                     return true;
                 }
-            });
+            }, (AudioManager) context.getSystemService(Context.AUDIO_SERVICE));
             mediaPlayers.put(playerId, player);
         }
         return mediaPlayers.get(playerId);
